@@ -1,10 +1,12 @@
-import {createProfileTemplate} from "./components/profileTemplate.js";
-import {createMainNavigationTemplate} from "./components/mainNavigationTemplate.js";
-import {createSortTemplate} from "./components/sortTemplate.js";
-import {createFilmCardContainerTemplate} from "./components/filmCardContainerTemplate.js";
-import {createFilmCardTemplate} from "./components/filmCardTemplate.js";
-import {createShowMoreBtnTemplate} from "./components/showMoreBtnTemplate.js";
-import {createTopRatedTemplate} from "./components/topRatedTemplate.js";
+import {createProfileTemplate} from "./components/Profile-Template.js";
+import {createMainNavigationTemplate} from "./components/Main-Navigation-Template.js";
+import {createSortTemplate} from "./components/Sort-Template.js";
+import {createFilmCardContainerTemplate} from "./components/Film-Card-Container-Template.js";
+import {createFilmCardTemplate} from "./components/Film-Card-Template.js";
+import {createShowMoreBtnTemplate} from "./components/Show-More-Btn-Template.js";
+import {createTopRatedTemplate} from "./components/Top-Rated-Template.js";
+import {createFilmDetailsTemplate} from "./components/Film-details.js";
+import {generateFilmsCards} from "./mock/Film-Card.js";
 
 
 const render = (container, template, place) => {
@@ -25,29 +27,46 @@ render (siteMain, createFilmCardContainerTemplate(), `beforeend`);
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
 
-for (let i = 0; i < 5; i++) {
-    render (filmsListContainer, createFilmCardTemplate(), `beforeend`)
-};
+const filmCards = generateFilmsCards();
+
+render (filmsListContainer, createFilmCardTemplate(filmCards), `beforeend`)
+
 
 const filmsList = document.querySelector(`.films-list`);
 
 render (filmsList, createShowMoreBtnTemplate(), `beforeend`);
 
 
-const films = document.querySelector(`.films`);
+const film = document.querySelector(`.films`);
 
 for (let i = 0; i < 2; i++) {
-    render (films  , createTopRatedTemplate(), `beforeend`);
+    render (film, createTopRatedTemplate(), `beforeend`);
 }
 
 const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
 
-console.log(extraFilmsListContainer);
-
 for (let i = 0; i < 2; i++) {
-
-    for (let i = 0; i < 2; i++) {
-        render (extraFilmsListContainer[i], createFilmCardTemplate(), `beforeend`)
-    };
-
+        render (extraFilmsListContainer[i], createFilmCardTemplate(filmCards), `beforeend`)
 };
+
+render (siteMain, createFilmDetailsTemplate(filmCards[0].name), `beforeend`);
+
+// Открытие и закрытие попапа
+const filmDetals = document.querySelector(`.film-details`);
+const filmDetalsEcsBtn = document.querySelector(`.film-details__close-btn`);
+const films = document.querySelectorAll(`.films`);
+
+films.forEach(function(i) {
+    i.addEventListener(`click`, function () {
+        filmDetals.classList.remove(`popup-close`);
+
+        if (true) {
+
+        };
+      });
+});
+
+filmDetalsEcsBtn.addEventListener(`click`, function () {
+  filmDetals.classList.add(`popup-close`);
+});
+

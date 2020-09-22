@@ -9,6 +9,12 @@ import {createFilmDetailsTemplate} from "./components/Film-details.js";
 import {generateFilmsCards} from "./mock/Film-Card.js";
 import {managingAMoviesData} from "./mock/Managing-A-movie.js";
 import {createFilmControlsTemplate} from "./components/Film-controls.js";
+import {createCommentsContainerTemplate} from "./components/Comments-container.js";
+import {generateComments} from "./mock/Comment.js";
+import {createCommentTemplate} from "./components/Comment.js";
+import {createNewComentContainerTemplate} from "./components/New-Comment-Container.js";
+import {generateCommentsEmojis} from "./mock/Comments-Emojis.js";
+import {createCommentEmojiTemplate} from "./components/Comment-Emoji.js";
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template)
@@ -31,6 +37,10 @@ const filmsListContainer = document.querySelector(`.films-list__container`);
 const filmCards = generateFilmsCards();
 
 const ControlsData = managingAMoviesData();
+
+const CommentsData = generateComments();
+
+const CommentsEmojisData = generateCommentsEmojis();
 
 render (filmsListContainer, createFilmCardTemplate(filmCards), `beforeend`)
 
@@ -88,6 +98,22 @@ const OnCatchAClick = function () {
       const formDetailsTopContainer = document.querySelector(`.form-details__top-container`);
 
       render (formDetailsTopContainer, createFilmControlsTemplate(ControlsData[0], ControlsData[1], ControlsData[2]), `beforeend`);
+
+     // Рендер комментариев
+
+      const filmDetalsinner = document.querySelector(`.film-details__inner`);
+
+      render (filmDetalsinner, createCommentsContainerTemplate(4), `beforeend`);
+
+      const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
+      const CommentsList = document.querySelector(`.film-details__comments-list`);
+      const CommentsEmojiList = document.querySelector(`.film-details__emoji-list`);
+
+      render (CommentsList, createCommentTemplate(CommentsData), `beforeend`)
+      render (CommentsWrap, createNewComentContainerTemplate(), `beforeend`)
+      // render (CommentsEmojiList, createCommentEmojiTemplate(CommentsEmojisData), `beforeend`)
+
+
     };
   });
 };

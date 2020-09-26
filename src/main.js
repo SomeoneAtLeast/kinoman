@@ -14,7 +14,9 @@ import {generateComments} from "./mock/Comment.js";
 import {createCommentTemplate} from "./components/Comment.js";
 import {createNewComentContainerTemplate} from "./components/New-Comment-Container.js";
 import {generateCommentsEmojis} from "./mock/Comments-Emojis.js";
-import {createCommentEmojiTemplate} from "./components/Comment-Emoji.js";
+import {createCommetEmojiTemplate} from "./components/Comment-Emoji.js";
+
+const FILM_COUNT = 5;
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template)
@@ -34,16 +36,13 @@ render (siteMain, createFilmCardContainerTemplate(), `beforeend`);
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
 
-const filmCards = generateFilmsCards();
+const filmCards = generateFilmsCards(FILM_COUNT);
 
 const ControlsData = managingAMoviesData();
 
-const CommentsData = generateComments();
-
-const CommentsEmojisData = generateCommentsEmojis();
-
-render (filmsListContainer, createFilmCardTemplate(filmCards), `beforeend`)
-
+for (let i = 0; i < filmCards.length; i++) {
+  render (filmsListContainer, createFilmCardTemplate(filmCards[i]), `beforeend`)
+}
 
 const filmsList = document.querySelector(`.films-list`);
 
@@ -59,7 +58,7 @@ for (let i = 0; i < 2; i++) {
 const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
 
 for (let i = 0; i < 2; i++) {
-        render (extraFilmsListContainer[i], createFilmCardTemplate(filmCards), `beforeend`)
+    render (extraFilmsListContainer[i], createFilmCardTemplate(filmCards), `beforeend`)
 };
 
 let сlickСaught = false;
@@ -89,9 +88,7 @@ const OnCatchAClick = function () {
 
       // Рендер информации о фильме
 
-      render (siteMain, createFilmDetailsTemplate(filmCards[num].name, filmCards[num].rating, filmCards[num].director,
-      filmCards[num].writers, filmCards[num].actors, filmCards[num].year, filmCards[num].duration, filmCards[num].country,
-      filmCards[num].genre, filmCards[num].poster, filmCards[num].description, filmCards[num].age), `beforeend`);
+      render (siteMain, createFilmDetailsTemplate(filmCards[num]), `beforeend`);
       
      // Рендер кнопок управления
 
@@ -101,19 +98,28 @@ const OnCatchAClick = function () {
 
      // Рендер комментариев
 
-      const filmDetalsinner = document.querySelector(`.film-details__inner`);
-
-      render (filmDetalsinner, createCommentsContainerTemplate(4), `beforeend`);
+      const COMMENT_COUNT = 4;
+      const CommentsData = generateComments(COMMENT_COUNT);
+      const filmDetalsInner = document.querySelector(`.film-details__inner`);
+      
+      render (filmDetalsInner, createCommentsContainerTemplate(4), `beforeend`);
 
       const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
       const CommentsList = document.querySelector(`.film-details__comments-list`);
+
+      for (let i = 0; i < CommentsData.length; i++) {
+        render (CommentsList, createCommentTemplate(CommentsData[i]), `beforeend`)
+      }
+
+      render (CommentsWrap, createNewComentContainerTemplate(), `beforeend`);
+
       const CommentsEmojiList = document.querySelector(`.film-details__emoji-list`);
+      const EMOJI_COUNT = 4;
+      const CommentsEmojisData = generateCommentsEmojis(EMOJI_COUNT);
 
-      render (CommentsList, createCommentTemplate(CommentsData), `beforeend`)
-      render (CommentsWrap, createNewComentContainerTemplate(), `beforeend`)
-      // render (CommentsEmojiList, createCommentEmojiTemplate(CommentsEmojisData), `beforeend`)
-
-
+      for (let i = 0; i < CommentsEmojisData.length; i++) {
+        render (CommentsEmojiList, createCommetEmojiTemplate(CommentsEmojisData[i]), `beforeend`)
+      };
     };
   });
 };

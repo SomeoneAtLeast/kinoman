@@ -213,7 +213,7 @@ button {
   border-bottom: solid 2px var(--outline-color);
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: center;тщтк
   font-size: var(--font-size-bigger);
   font-weight: 800;
 }
@@ -1074,4 +1074,8 @@ button {
   min-height: 300px;
   padding-top: 50px;
   padding-bottom: 50px;
+}
+
+.popup-close {
+  display: none;
 }

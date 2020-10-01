@@ -1,3 +1,5 @@
+`use strict`
+
 import {createProfileTemplate} from "./components/Profile-Template.js";
 import {createMainNavigationTemplate} from "./components/Main-Navigation-Template.js";
 import {createSortTemplate} from "./components/Sort-Template.js";
@@ -16,7 +18,9 @@ import {createNewComentContainerTemplate} from "./components/New-Comment-Contain
 import {generateCommentsEmojis} from "./mock/Comments-Emojis.js";
 import {createCommetEmojiTemplate} from "./components/Comment-Emoji.js";
 
-const FILM_COUNT = 5;
+const FILM_COUNT = 23;
+const SHOWING_FILMS_COUNT_ON_START = 5;
+const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template)
@@ -40,7 +44,9 @@ const filmCards = generateFilmsCards(FILM_COUNT);
 
 const ControlsData = managingAMoviesData();
 
-for (let i = 0; i < filmCards.length; i++) {
+let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
+
+for (let i = 0; i < showingFilmsCount; i++) {
   render (filmsListContainer, createFilmCardTemplate(filmCards[i]), `beforeend`)
 }
 
@@ -48,6 +54,19 @@ const filmsList = document.querySelector(`.films-list`);
 
 render (filmsList, createShowMoreBtnTemplate(), `beforeend`);
 
+const showMoreBtn = document.querySelector(`.films-list__show-more`);
+
+showMoreBtn.addEventListener(`click`, () => {
+  const prevFilmsCount = showingFilmsCount;
+  showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+
+  filmCards.slice(prevFilmsCount, showingFilmsCount)
+    .forEach((filmCards) => render(filmsListContainer, createFilmCardTemplate(filmCards), `beforeend`));
+
+  if (showingFilmsCount >= filmCards.length) {
+    showMoreBtn.remove();
+  };
+});
 
 const film = document.querySelector(`.films`);
 

@@ -1,73 +1,83 @@
 `use strict`
 
-import {createProfileTemplate} from "./components/Profile-Template.js";
-import {createMainNavigationTemplate} from "./components/Main-Navigation-Template.js";
-import {createSortTemplate} from "./components/Sort-Template.js";
-import {createFilmCardContainerTemplate} from "./components/Film-Card-Container-Template.js";
-import {createFilmCardTemplate} from "./components/Film-Card-Template.js";
-import {createShowMoreBtnTemplate} from "./components/Show-More-Btn-Template.js";
-import {createTopRatedTemplate} from "./components/Top-Rated-Template.js";
-import {createFilmDetailsTemplate} from "./components/Film-details.js";
-import {generateFilmsCards} from "./mock/Film-Card.js";
-import {managingAMoviesData} from "./mock/Managing-A-movie.js";
-import {createFilmControlsTemplate} from "./components/Film-controls.js";
+import Profile from "./components/profile.js";
+import {profileData} from "./mock/profiles-data.js";
+import MainNavigation from "./components/main-navigation.js";
+import {generateNav} from "./mock/nav-data.js";
+import SortContainer from "./components/sort-container.js";
+import Sort from "./components/sort.js";
+import FilmCardContainer from "./components/film-card-container.js";
+import FilmCard from "./components/film-card.js";
+import {generateFilmsCards} from "./mock/film-card.js";
+import ShowMoreBtn from "./components/show-more-btn.js";
+import TopRated from "./components/top-rated.js";
+import FilmDetails from "./components/film-details.js";
+import FilmControls from "./components/film-controls.js";
+import {managingAMoviesData} from "./mock/managing-a-movie.js";
+
 import {createCommentsContainerTemplate} from "./components/Comments-container.js";
 import {generateComments} from "./mock/Comment.js";
 import {createCommentTemplate} from "./components/Comment.js";
 import {createNewComentContainerTemplate} from "./components/New-Comment-Container.js";
 import {generateCommentsEmojis} from "./mock/Comments-Emojis.js";
 import {createCommetEmojiTemplate} from "./components/Comment-Emoji.js";
-import {createSortContainerTemplate} from "./components/Sort-Container.js";
+
 import {sortData} from "./mock/Sort-Data.js";
-import {generateNav} from "./mock/Nav-Data.js";
-import {profileData} from "./mock/Profile.js";
 import {createFilmsInsideTemplate} from "./components/Films-Inside.js";
-import {renderTemplate} from "./utils.js";
+import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
 const FILM_COUNT = 23;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
+// Профиль
+
 const userProfileContainer = document.querySelector(`.header`);
 
 const profilesData = profileData();
 
-renderTemplate(userProfileContainer, createProfileTemplate(profilesData), `beforeend`);
+renderElement(userProfileContainer, new Profile(profilesData[0]).getElement(), RenderPosition.BEFOREEND);
+
+// Навигация
 
 const siteMain = document.querySelector(`.main`);
 
 const navDatas = generateNav();
 
-renderTemplate(siteMain, createMainNavigationTemplate(navDatas), `beforeend`);
+renderElement(siteMain, new MainNavigation(navDatas).getElement(), RenderPosition.BEFOREEND);
 
-renderTemplate(siteMain, createSortContainerTemplate(), `beforeend`);
+// Сортировка
+
+renderElement(siteMain, new SortContainer().getElement(), RenderPosition.BEFOREEND);
 
 const createSortContainer = document.querySelector(`.sort`);;
 
 const sortDatas = sortData();
 
 for (let i = 0; i < 3; i++) {
-  renderTemplate(createSortContainer, createSortTemplate(sortDatas[i], (i === 0) ? true: 0), `beforeend`);
+  renderElement(createSortContainer, new Sort(sortDatas[i], (i === 0) ? true: 0).getElement(), RenderPosition.BEFOREEND);
 };
 
 
-renderTemplate(siteMain, createFilmCardContainerTemplate(), `beforeend`);
+// Фильмы
+
+renderElement(siteMain, new FilmCardContainer().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListContainer = document.querySelector(`.films-list__container`);
 
 const filmCards = generateFilmsCards(FILM_COUNT);
 
-const ControlsData = managingAMoviesData();
-
 let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
 
 for (let i = 0; i < showingFilmsCount; i++) {
-  renderTemplate(filmsListContainer, createFilmCardTemplate(filmCards[i]), `beforeend`)
-}
+  renderElement(filmsListContainer, new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+};
+
+// Загрузка следующих фильмов
 
 const filmsList = document.querySelector(`.films-list`);
 
-renderTemplate(filmsList, createShowMoreBtnTemplate(), `beforeend`);
+renderElement(filmsList, new ShowMoreBtn().getElement(), RenderPosition.BEFOREEND);
 
 const showMoreBtn = document.querySelector(`.films-list__show-more`);
 
@@ -76,28 +86,30 @@ showMoreBtn.addEventListener(`click`, () => {
   showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
   filmCards.slice(prevFilmsCount, showingFilmsCount)
-    .forEach((filmCards) => render(filmsListContainer, createFilmCardTemplate(filmCards), `beforeend`));
+    .forEach((filmCards) => renderElement(filmsListContainer, new FilmCard(filmCards).getElement(), RenderPosition.BEFOREEND));
 
   if (showingFilmsCount >= filmCards.length) {
     showMoreBtn.remove();
   };
 });
 
-const film = document.querySelector(`.films`);
+// Самые рейтинговые и самые комментируемые 
+
+const films = document.querySelector(`.films`);
 
 for (let i = 0; i < 2; i++) {
-    renderTemplate(film, createTopRatedTemplate(), `beforeend`);
+    renderElement(films, new TopRated().getElement(), RenderPosition.BEFOREEND)
 }
 
 const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
 
 for (let i = 0; i < 2; i++) {
     for (let i = 0; i < 2; i++) {
-      renderTemplate(extraFilmsListContainer[i], createFilmCardTemplate(filmCards[i]), `beforeend`)
-      
-  };
-    
+      renderElement(extraFilmsListContainer[i], new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+  }; 
 };
+
+// Подробная информация о фильме
 
 let сlickСaught = false;
 
@@ -126,13 +138,14 @@ const OnCatchAClick = function () {
 
       // Рендер информации о фильме
 
-      renderTemplate(siteMain, createFilmDetailsTemplate(filmCards[num]), `beforeend`);
+      renderElement(siteMain, new FilmDetails(filmCards[num]).getElement(), RenderPosition.BEFOREEND);
       
      // Рендер кнопок управления
 
+      const ControlsData = managingAMoviesData();
       const formDetailsTopContainer = document.querySelector(`.form-details__top-container`);
-
-      renderTemplate(formDetailsTopContainer, createFilmControlsTemplate(ControlsData[0], ControlsData[1], ControlsData[2]), `beforeend`);
+      
+      renderElement(formDetailsTopContainer, new FilmControls(ControlsData[0], ControlsData[1], ControlsData[2]).getElement(), RenderPosition.BEFOREEND);
 
      // Рендер комментариев
 

@@ -5,6 +5,7 @@ import {profileData} from "./mock/profiles-data.js";
 import MainNavigation from "./components/main-navigation.js";
 import {generateNav} from "./mock/nav-data.js";
 import SortContainer from "./components/sort-container.js";
+import {sortData} from "./mock/sort-data.js";
 import Sort from "./components/sort.js";
 import FilmCardContainer from "./components/film-card-container.js";
 import FilmCard from "./components/film-card.js";
@@ -14,16 +15,13 @@ import TopRated from "./components/top-rated.js";
 import FilmDetails from "./components/film-details.js";
 import FilmControls from "./components/film-controls.js";
 import {managingAMoviesData} from "./mock/managing-a-movie.js";
-
-import {createCommentsContainerTemplate} from "./components/Comments-container.js";
-import {generateComments} from "./mock/Comment.js";
-import {createCommentTemplate} from "./components/Comment.js";
-import {createNewComentContainerTemplate} from "./components/New-Comment-Container.js";
-import {generateCommentsEmojis} from "./mock/Comments-Emojis.js";
-import {createCommetEmojiTemplate} from "./components/Comment-Emoji.js";
-
-import {sortData} from "./mock/Sort-Data.js";
-import {createFilmsInsideTemplate} from "./components/Films-Inside.js";
+import CommentsContainer from "./components/comments-container.js";
+import {generateComments} from "./mock/comment.js";
+import Comment from "./components/comment.js";
+import NewComentContainer from "./components/new-comment-container.js";
+import {generateCommentsEmojis} from "./mock/comments-emojis.js";
+import CommetEmoji from "./components/comment-emoji.js";
+import FilmsInside from "./components/films-inside.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
 const FILM_COUNT = 23;
@@ -153,23 +151,28 @@ const OnCatchAClick = function () {
       const CommentsData = generateComments(COMMENT_COUNT);
       const filmDetalsInner = document.querySelector(`.film-details__inner`);
       
-      renderTemplate(filmDetalsInner, createCommentsContainerTemplate(4), `beforeend`);
+      renderElement(filmDetalsInner, new CommentsContainer(COMMENT_COUNT).getElement(), RenderPosition.BEFOREEND);
+
 
       const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
       const CommentsList = document.querySelector(`.film-details__comments-list`);
 
       for (let i = 0; i < CommentsData.length; i++) {
-        renderTemplate(CommentsList, createCommentTemplate(CommentsData[i]), `beforeend`)
-      }
+        renderElement(CommentsList, new Comment(CommentsData[i]).getElement(), RenderPosition.BEFOREEND);
+      };
 
-      renderTemplate(CommentsWrap, createNewComentContainerTemplate(), `beforeend`);
+      // Рендер поля ввода нового комментария
+
+      renderElement(CommentsWrap, new NewComentContainer().getElement(), RenderPosition.BEFOREEND);
+
+      // Рендер смайлов
 
       const CommentsEmojiList = document.querySelector(`.film-details__emoji-list`);
       const EMOJI_COUNT = 4;
       const CommentsEmojisData = generateCommentsEmojis(EMOJI_COUNT);
 
       for (let i = 0; i < CommentsEmojisData.length; i++) {
-        renderTemplate(CommentsEmojiList, createCommetEmojiTemplate(CommentsEmojisData[i]), `beforeend`)
+        renderElement(CommentsEmojiList, new CommetEmoji(CommentsEmojisData[i]).getElement(), RenderPosition.BEFOREEND);
       };
     };
   });
@@ -198,6 +201,8 @@ filmsListContainer.addEventListener(`click`, function () {
   showAndClosePopup();
 });
 
+// Рендер нижнего блока с количеством фильмов
+
 const footerStatistics = document.querySelector(`.footer__statistics`);
 
-renderTemplate(footerStatistics, createFilmsInsideTemplate(), `beforeend`);
+renderElement(footerStatistics, new FilmsInside().getElement(), RenderPosition.BEFOREEND);

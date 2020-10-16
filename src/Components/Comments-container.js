@@ -1,4 +1,6 @@
-export const createCommentsContainerTemplate = (commNumb) => {
+import {createElement} from "../utils.js";
+
+const createCommentsContainerTemplate = (commNumb) => {
     return (
         `<div class="form-details__bottom-container">
             <section class="film-details__comments-wrap">
@@ -8,4 +10,27 @@ export const createCommentsContainerTemplate = (commNumb) => {
             </section>
         </div>`
     )
+};
+
+export default class CommentsContainer {
+    constructor(commNumb) {
+      this._commNumb = commNumb;
+      this._element = null;
+    }
+  
+    getTemplate() {
+      return createCommentsContainerTemplate(this._commNumb);
+    }
+  
+    getElement() {
+      if (!this._element) {
+        this._element = createElement(this.getTemplate());
+      }
+  
+      return this._element;
+    }
+  
+    removeElement() {
+      this._element = null;
+    }
 };

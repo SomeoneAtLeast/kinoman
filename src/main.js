@@ -180,11 +180,21 @@ const OnCatchAClick = function () {
 
 const showAndClosePopup = function () {
 
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      siteMain.removeChild(filmDetals);
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
   // Открытие
 
   const filmDetals = document.querySelector(`.film-details`);
 
   filmDetals.classList.remove(`popup-close`);
+
+  document.addEventListener(`keydown`, onEscKeyDown);
 
   // Закрытие попапа
 
@@ -192,6 +202,7 @@ const showAndClosePopup = function () {
 
   filmDetalsEcsBtn.addEventListener(`click`, function () {
     siteMain.removeChild(filmDetals);
+    document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
 };

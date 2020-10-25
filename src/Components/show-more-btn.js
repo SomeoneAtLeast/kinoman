@@ -1,21 +1,19 @@
 import {createElement} from "../utils.js";
 
-const createFilmsInsideTemplate = () => {
-      return (
-          `<section class="footer__statistics">
-                <p>130 291 movies inside</p>
-            </section>`
-      )
-  };
+const createShowMoreBtnTemplate = () => {
+    return (
+        `<button class="films-list__show-more">Show more</button>`
+    )
+};
 
-
-export default class FilmsInside {
+export default class ShowMoreBtn {
     constructor() {
+
       this._element = null;
     }
   
     getTemplate() {
-      return createFilmsInsideTemplate();
+      return createShowMoreBtnTemplate();
     }
   
     getElement() {
@@ -29,4 +27,4 @@ export default class FilmsInside {
     removeElement() {
       this._element = null;
     }
-};  
+};

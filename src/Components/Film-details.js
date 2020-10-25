@@ -1,4 +1,7 @@
-export const createFilmDetailsTemplate = (filmDetalsData) => {
+import {createElement} from "../utils.js";
+
+
+const createFilmDetailsTemplate = (filmDetalsData) => {
   const {name, rating, director, writers, actors, year, duration, country, genre, poster, description, age} = filmDetalsData;
     return (
         `<section class="film-details popup-close">
@@ -59,17 +62,36 @@ export const createFilmDetailsTemplate = (filmDetalsData) => {
                       <span class="film-details__genre">${genre}</span></td>
                   </tr>
                 </table>
-      
                 <p class="film-details__film-description">
                   ${description}
                 </p>
               </div>
             </div>
-
           </div>
-      
- 
         </form>
       </section>`
     )
+};
+
+export default class FilmDetals {
+  constructor(filmDetalsData) {
+    this._filmDetalsData = filmDetalsData;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._filmDetalsData);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
 };

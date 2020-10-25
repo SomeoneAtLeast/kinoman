@@ -1,5 +1,3 @@
-`use strict`
-
 import Profile from "./components/profile.js";
 import {profileData} from "./mock/profiles-data.js";
 import MainNavigation from "./components/main-navigation.js";
@@ -22,9 +20,10 @@ import NewComentContainer from "./components/new-comment-container.js";
 import {generateCommentsEmojis} from "./mock/comments-emojis.js";
 import CommetEmoji from "./components/comment-emoji.js";
 import FilmsInside from "./components/films-inside.js";
+import NoMovies from "./components/no-movies.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
-const FILM_COUNT = 23;
+const FILM_COUNT = 0;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
@@ -57,160 +56,177 @@ for (let i = 0; i < 3; i++) {
 };
 
 
-// Фильмы
+// Контейнер для фильмов
 
 renderElement(siteMain, new FilmCardContainer().getElement(), RenderPosition.BEFOREEND);
 
-const filmsListContainer = document.querySelector(`.films-list__container`);
+// Фильмы
 
-const filmCards = generateFilmsCards(FILM_COUNT);
+const renderFilms = () => {
 
-let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
+  const filmsListContainer = document.querySelector(`.films-list__container`);
 
-for (let i = 0; i < showingFilmsCount; i++) {
-  renderElement(filmsListContainer, new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
-};
+  const filmCards = generateFilmsCards(FILM_COUNT);
+  
+  const fimsListEmpty = filmCards.length === 0;
 
-// Загрузка следующих фильмов
+  if (fimsListEmpty) {
+    renderElement(filmsListContainer, new NoMovies().getElement(), RenderPosition.BEFOREEND);
 
-const filmsList = document.querySelector(`.films-list`);
+    return
+  }
 
-renderElement(filmsList, new ShowMoreBtn().getElement(), RenderPosition.BEFOREEND);
-
-const showMoreBtn = document.querySelector(`.films-list__show-more`);
-
-showMoreBtn.addEventListener(`click`, () => {
-  const prevFilmsCount = showingFilmsCount;
-  showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
-
-  filmCards.slice(prevFilmsCount, showingFilmsCount)
-    .forEach((filmCards) => renderElement(filmsListContainer, new FilmCard(filmCards).getElement(), RenderPosition.BEFOREEND));
-
-  if (showingFilmsCount >= filmCards.length) {
-    showMoreBtn.remove();
+  let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
+  
+  for (let i = 0; i < showingFilmsCount; i++) {
+    renderElement(filmsListContainer, new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
   };
-});
-
-// Самые рейтинговые и самые комментируемые 
-
-const films = document.querySelector(`.films`);
-
-for (let i = 0; i < 2; i++) {
-    renderElement(films, new TopRated().getElement(), RenderPosition.BEFOREEND)
-}
-
-const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
-
-for (let i = 0; i < 2; i++) {
-    for (let i = 0; i < 2; i++) {
-      renderElement(extraFilmsListContainer[i], new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
-  }; 
-};
-
-// Подробная информация о фильме
-
-let сlickСaught = false;
-
-const OnCatchAClick = function () {
-  const target = event.target;
-  const filmCard = event.target.closest('.film-card');
-  const filmCardsCollection = document.querySelectorAll(`.film-card`);
-
-
-  if (!filmCard ||
-      target.classList.contains(`film-card__controls-item--add-to-watchlist`) ||
-      target.classList.contains(`film-card__controls-item--mark-as-watched`) ||
-      target.classList.contains(`film-card__controls-item--favorite`)) {
-        return;
-      };
-
-  сlickСaught = true;
-
-  let num = -1;
-
-  filmCardsCollection.forEach(function(i) {
-
-    num++
-
-    if (i === filmCard) {
-
-      // Рендер информации о фильме
-
-      renderElement(siteMain, new FilmDetails(filmCards[num]).getElement(), RenderPosition.BEFOREEND);
-      
-     // Рендер кнопок управления
-
-      const ControlsData = managingAMoviesData();
-      const formDetailsTopContainer = document.querySelector(`.form-details__top-container`);
-      
-      renderElement(formDetailsTopContainer, new FilmControls(ControlsData[0], ControlsData[1], ControlsData[2]).getElement(), RenderPosition.BEFOREEND);
-
-     // Рендер комментариев
-
-      const COMMENT_COUNT = 4;
-      const CommentsData = generateComments(COMMENT_COUNT);
-      const filmDetalsInner = document.querySelector(`.film-details__inner`);
-      
-      renderElement(filmDetalsInner, new CommentsContainer(COMMENT_COUNT).getElement(), RenderPosition.BEFOREEND);
-
-
-      const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
-      const CommentsList = document.querySelector(`.film-details__comments-list`);
-
-      for (let i = 0; i < CommentsData.length; i++) {
-        renderElement(CommentsList, new Comment(CommentsData[i]).getElement(), RenderPosition.BEFOREEND);
-      };
-
-      // Рендер поля ввода нового комментария
-
-      renderElement(CommentsWrap, new NewComentContainer().getElement(), RenderPosition.BEFOREEND);
-
-      // Рендер смайлов
-
-      const CommentsEmojiList = document.querySelector(`.film-details__emoji-list`);
-      const EMOJI_COUNT = 4;
-      const CommentsEmojisData = generateCommentsEmojis(EMOJI_COUNT);
-
-      for (let i = 0; i < CommentsEmojisData.length; i++) {
-        renderElement(CommentsEmojiList, new CommetEmoji(CommentsEmojisData[i]).getElement(), RenderPosition.BEFOREEND);
-      };
+  
+  // Загрузка следующих фильмов
+  
+  const filmsList = document.querySelector(`.films-list`);
+  
+  if (FILM_COUNT > 5) {
+    renderElement(filmsList, new ShowMoreBtn().getElement(), RenderPosition.BEFOREEND);
+  }
+  
+  const showMoreBtn = document.querySelector(`.films-list__show-more`);
+  
+  showMoreBtn.addEventListener(`click`, () => {
+    const prevFilmsCount = showingFilmsCount;
+    showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+  
+    filmCards.slice(prevFilmsCount, showingFilmsCount)
+      .forEach((filmCards) => renderElement(filmsListContainer, new FilmCard(filmCards).getElement(), RenderPosition.BEFOREEND));
+  
+    if (showingFilmsCount >= filmCards.length) {
+      showMoreBtn.remove();
     };
   });
-};
-
-const showAndClosePopup = function () {
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      evt.preventDefault();
+  
+  // Самые рейтинговые и самые комментируемые 
+  
+  const films = document.querySelector(`.films`);
+  
+  for (let i = 0; i < 2; i++) {
+      renderElement(films, new TopRated().getElement(), RenderPosition.BEFOREEND)
+  }
+  
+  const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
+  
+  for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 2; i++) {
+        renderElement(extraFilmsListContainer[i], new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+    }; 
+  };
+  
+  // Подробная информация о фильме
+  
+  let сlickСaught = false;
+  
+  const OnCatchAClick = function () {
+    const target = event.target;
+    const filmCard = event.target.closest('.film-card');
+    const filmCardsCollection = document.querySelectorAll(`.film-card`);
+  
+  
+    if (!filmCard ||
+        target.classList.contains(`film-card__controls-item--add-to-watchlist`) ||
+        target.classList.contains(`film-card__controls-item--mark-as-watched`) ||
+        target.classList.contains(`film-card__controls-item--favorite`)) {
+          return;
+        };
+  
+    сlickСaught = true;
+  
+    let num = -1;
+  
+    filmCardsCollection.forEach(function(i) {
+  
+      num++
+  
+      if (i === filmCard) {
+  
+        // Рендер информации о фильме
+  
+        renderElement(siteMain, new FilmDetails(filmCards[num]).getElement(), RenderPosition.BEFOREEND);
+        
+       // Рендер кнопок управления
+  
+        const ControlsData = managingAMoviesData();
+        const formDetailsTopContainer = document.querySelector(`.form-details__top-container`);
+        
+        renderElement(formDetailsTopContainer, new FilmControls(ControlsData[0], ControlsData[1], ControlsData[2]).getElement(), RenderPosition.BEFOREEND);
+  
+       // Рендер комментариев
+  
+        const COMMENT_COUNT = 4;
+        const CommentsData = generateComments(COMMENT_COUNT);
+        const filmDetalsInner = document.querySelector(`.film-details__inner`);
+        
+        renderElement(filmDetalsInner, new CommentsContainer(COMMENT_COUNT).getElement(), RenderPosition.BEFOREEND);
+  
+  
+        const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
+        const CommentsList = document.querySelector(`.film-details__comments-list`);
+  
+        for (let i = 0; i < CommentsData.length; i++) {
+          renderElement(CommentsList, new Comment(CommentsData[i]).getElement(), RenderPosition.BEFOREEND);
+        };
+  
+        // Рендер поля ввода нового комментария
+  
+        renderElement(CommentsWrap, new NewComentContainer().getElement(), RenderPosition.BEFOREEND);
+  
+        // Рендер смайлов
+  
+        const CommentsEmojiList = document.querySelector(`.film-details__emoji-list`);
+        const EMOJI_COUNT = 4;
+        const CommentsEmojisData = generateCommentsEmojis(EMOJI_COUNT);
+  
+        for (let i = 0; i < CommentsEmojisData.length; i++) {
+          renderElement(CommentsEmojiList, new CommetEmoji(CommentsEmojisData[i]).getElement(), RenderPosition.BEFOREEND);
+        };
+      };
+    });
+  };
+  
+  const showAndClosePopup = function () {
+  
+    const onEscKeyDown = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        evt.preventDefault();
+        siteMain.removeChild(filmDetals);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+  
+    // Открытие
+  
+    const filmDetals = document.querySelector(`.film-details`);
+  
+    filmDetals.classList.remove(`popup-close`);
+  
+    document.addEventListener(`keydown`, onEscKeyDown);
+  
+    // Закрытие попапа
+  
+    const filmDetalsEcsBtn = document.querySelector(`.film-details__close-btn`);
+  
+    filmDetalsEcsBtn.addEventListener(`click`, function () {
       siteMain.removeChild(filmDetals);
       document.removeEventListener(`keydown`, onEscKeyDown);
-    }
+    });
+  
   };
+  
+  filmsListContainer.addEventListener(`click`, function () {
+    OnCatchAClick();
+    showAndClosePopup();
+  });  
+}
 
-  // Открытие
-
-  const filmDetals = document.querySelector(`.film-details`);
-
-  filmDetals.classList.remove(`popup-close`);
-
-  document.addEventListener(`keydown`, onEscKeyDown);
-
-  // Закрытие попапа
-
-  const filmDetalsEcsBtn = document.querySelector(`.film-details__close-btn`);
-
-  filmDetalsEcsBtn.addEventListener(`click`, function () {
-    siteMain.removeChild(filmDetals);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-};
-
-filmsListContainer.addEventListener(`click`, function () {
-  OnCatchAClick();
-  showAndClosePopup();
-});
+renderFilms();
 
 // Рендер нижнего блока с количеством фильмов
 

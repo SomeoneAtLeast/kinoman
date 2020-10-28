@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createShowMoreBtnTemplate = () => {
     return (
@@ -6,25 +6,8 @@ const createShowMoreBtnTemplate = () => {
     )
 };
 
-export default class ShowMoreBtn {
-    constructor() {
-
-      this._element = null;
-    }
-  
-    getTemplate() {
-      return createShowMoreBtnTemplate();
-    }
-  
-    getElement() {
-      if (!this._element) {
-        this._element = createElement(this.getTemplate());
-      }
-  
-      return this._element;
-    }
-  
-    removeElement() {
-      this._element = null;
-    }
+export default class ShowMoreBtn extends AbstarctComponent { 
+  getTemplate() {
+    return createShowMoreBtnTemplate();
+  };
 };

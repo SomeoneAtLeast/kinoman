@@ -1,5 +1,4 @@
-import {createElement} from "../utils.js";
-
+import AbstarctComponent from "./abstract-comp.js";
 
 const createFilmDetailsTemplate = (filmDetalsData) => {
   const {name, rating, director, writers, actors, year, duration, country, genre, poster, description, age} = filmDetalsData;
@@ -73,25 +72,14 @@ const createFilmDetailsTemplate = (filmDetalsData) => {
     )
 };
 
-export default class FilmDetals {
+export default class FilmDetals extends AbstarctComponent {
   constructor(filmDetalsData) {
+    super();
+
     this._filmDetalsData = filmDetalsData;
-    this._element = null;
-  }
+  };
 
   getTemplate() {
     return createFilmDetailsTemplate(this._filmDetalsData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
+  };
 };

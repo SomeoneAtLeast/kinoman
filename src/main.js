@@ -18,12 +18,12 @@ import {generateComments} from "./mock/comment.js";
 import Comment from "./components/comment.js";
 import NewComentContainer from "./components/new-comment-container.js";
 import {generateCommentsEmojis} from "./mock/comments-emojis.js";
-import CommetEmoji from "./components/comment-emoji.js";
+import CommetEmoji from "./components/comment-Emoji.js";
 import FilmsInside from "./components/films-inside.js";
 import NoMovies from "./components/no-movies.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
-const FILM_COUNT = 0;
+const FILM_COUNT = 25;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 

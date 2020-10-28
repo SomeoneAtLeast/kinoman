@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createNewComentContainerTemplate = () => {
     return (
@@ -16,24 +16,8 @@ const createNewComentContainerTemplate = () => {
 };
 
 
-export default class NewCommentContainer {
-    constructor() {
-      this._element = null;
-    }
-  
+export default class NewCommentContainer extends AbstarctComponent {
     getTemplate() {
       return createNewComentContainerTemplate();
-    }
-  
-    getElement() {
-      if (!this._element) {
-        this._element = createElement(this.getTemplate());
-      }
-  
-      return this._element;
-    }
-  
-    removeElement() {
-      this._element = null;
-    }
-  };
+    };
+};

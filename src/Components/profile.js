@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
+
 
 const createProfileTemplate = (profileData) => {
   const {rating, avatar} = profileData;
@@ -10,25 +11,14 @@ const createProfileTemplate = (profileData) => {
     )
 };
 
-export default class Profile {
+export default class Profile extends AbstarctComponent {
   constructor(profileData) {
+    super();
+
     this._profileData = profileData;
-    this._element = null;
   }
 
   getTemplate() {
     return createProfileTemplate(this._profileData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+  };
+};

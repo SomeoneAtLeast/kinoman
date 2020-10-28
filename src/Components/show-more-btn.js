@@ -10,4 +10,8 @@ export default class ShowMoreBtn extends AbstarctComponent {
   getTemplate() {
     return createShowMoreBtnTemplate();
   };
+
+  onSetClick (hendler) {
+    this.getElement().addEventListener(`click`, hendler);
+  }
 };

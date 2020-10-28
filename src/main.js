@@ -21,7 +21,7 @@ import {generateCommentsEmojis} from "./mock/comments-emojis.js";
 import CommetEmoji from "./components/comment-Emoji.js";
 import FilmsInside from "./components/films-inside.js";
 import NoMovies from "./components/no-movies.js";
-import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
+import {render, RenderPosition, remove} from "./utils/render.js";
 
 const FILM_COUNT = 25;
 const SHOWING_FILMS_COUNT_ON_START = 5;
@@ -33,7 +33,7 @@ const userProfileContainer = document.querySelector(`.header`);
 
 const profilesData = profileData();
 
-renderElement(userProfileContainer, new Profile(profilesData[0]).getElement(), RenderPosition.BEFOREEND);
+render(userProfileContainer, new Profile(profilesData[0]), RenderPosition.BEFOREEND);
 
 // Навигация
 
@@ -41,24 +41,24 @@ const siteMain = document.querySelector(`.main`);
 
 const navDatas = generateNav();
 
-renderElement(siteMain, new MainNavigation(navDatas).getElement(), RenderPosition.BEFOREEND);
+render(siteMain, new MainNavigation(navDatas), RenderPosition.BEFOREEND);
 
 // Сортировка
 
-renderElement(siteMain, new SortContainer().getElement(), RenderPosition.BEFOREEND);
+render(siteMain, new SortContainer(), RenderPosition.BEFOREEND);
 
 const createSortContainer = document.querySelector(`.sort`);;
 
 const sortDatas = sortData();
 
 for (let i = 0; i < 3; i++) {
-  renderElement(createSortContainer, new Sort(sortDatas[i], (i === 0) ? true: 0).getElement(), RenderPosition.BEFOREEND);
+  render(createSortContainer, new Sort(sortDatas[i], (i === 0) ? true: 0), RenderPosition.BEFOREEND);
 };
 
 
 // Контейнер для фильмов
 
-renderElement(siteMain, new FilmCardContainer().getElement(), RenderPosition.BEFOREEND);
+render(siteMain, new FilmCardContainer(), RenderPosition.BEFOREEND);
 
 // Фильмы
 
@@ -71,7 +71,7 @@ const renderFilms = () => {
   const fimsListEmpty = filmCards.length === 0;
 
   if (fimsListEmpty) {
-    renderElement(filmsListContainer, new NoMovies().getElement(), RenderPosition.BEFOREEND);
+    render(filmsListContainer, new NoMovies(), RenderPosition.BEFOREEND);
 
     return
   }
@@ -79,28 +79,27 @@ const renderFilms = () => {
   let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
   
   for (let i = 0; i < showingFilmsCount; i++) {
-    renderElement(filmsListContainer, new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+    render(filmsListContainer, new FilmCard(filmCards[i]), RenderPosition.BEFOREEND);
   };
   
   // Загрузка следующих фильмов
   
   const filmsList = document.querySelector(`.films-list`);
-  
+  const ShowMoreBtnComponent = new ShowMoreBtn();
+
   if (FILM_COUNT > 5) {
-    renderElement(filmsList, new ShowMoreBtn().getElement(), RenderPosition.BEFOREEND);
+    render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
   }
   
-  const showMoreBtn = document.querySelector(`.films-list__show-more`);
-  
-  showMoreBtn.addEventListener(`click`, () => {
+  ShowMoreBtnComponent.onSetClick(() => {
     const prevFilmsCount = showingFilmsCount;
     showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
   
     filmCards.slice(prevFilmsCount, showingFilmsCount)
-      .forEach((filmCards) => renderElement(filmsListContainer, new FilmCard(filmCards).getElement(), RenderPosition.BEFOREEND));
+      .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
   
     if (showingFilmsCount >= filmCards.length) {
-      showMoreBtn.remove();
+      remove(ShowMoreBtnComponent);
     };
   });
   
@@ -109,14 +108,14 @@ const renderFilms = () => {
   const films = document.querySelector(`.films`);
   
   for (let i = 0; i < 2; i++) {
-      renderElement(films, new TopRated().getElement(), RenderPosition.BEFOREEND)
+      render(films, new TopRated(), RenderPosition.BEFOREEND)
   }
   
   const extraFilmsListContainer = document.querySelectorAll(`.films-list--extra .films-list__container`);
   
   for (let i = 0; i < 2; i++) {
       for (let i = 0; i < 2; i++) {
-        renderElement(extraFilmsListContainer[i], new FilmCard(filmCards[i]).getElement(), RenderPosition.BEFOREEND);
+        render(extraFilmsListContainer[i], new FilmCard(filmCards[i]), RenderPosition.BEFOREEND);
     }; 
   };
   
@@ -149,14 +148,14 @@ const renderFilms = () => {
   
         // Рендер информации о фильме
   
-        renderElement(siteMain, new FilmDetails(filmCards[num]).getElement(), RenderPosition.BEFOREEND);
+        render(siteMain, new FilmDetails(filmCards[num]), RenderPosition.BEFOREEND);
         
        // Рендер кнопок управления
   
         const ControlsData = managingAMoviesData();
         const formDetailsTopContainer = document.querySelector(`.form-details__top-container`);
         
-        renderElement(formDetailsTopContainer, new FilmControls(ControlsData[0], ControlsData[1], ControlsData[2]).getElement(), RenderPosition.BEFOREEND);
+        render(formDetailsTopContainer, new FilmControls(ControlsData[0], ControlsData[1], ControlsData[2]), RenderPosition.BEFOREEND);
   
        // Рендер комментариев
   
@@ -164,19 +163,19 @@ const renderFilms = () => {
         const CommentsData = generateComments(COMMENT_COUNT);
         const filmDetalsInner = document.querySelector(`.film-details__inner`);
         
-        renderElement(filmDetalsInner, new CommentsContainer(COMMENT_COUNT).getElement(), RenderPosition.BEFOREEND);
+        render(filmDetalsInner, new CommentsContainer(COMMENT_COUNT), RenderPosition.BEFOREEND);
   
   
         const CommentsWrap = document.querySelector(`.film-details__comments-wrap`);
         const CommentsList = document.querySelector(`.film-details__comments-list`);
   
         for (let i = 0; i < CommentsData.length; i++) {
-          renderElement(CommentsList, new Comment(CommentsData[i]).getElement(), RenderPosition.BEFOREEND);
+          render(CommentsList, new Comment(CommentsData[i]), RenderPosition.BEFOREEND);
         };
   
         // Рендер поля ввода нового комментария
   
-        renderElement(CommentsWrap, new NewComentContainer().getElement(), RenderPosition.BEFOREEND);
+        render(CommentsWrap, new NewComentContainer(), RenderPosition.BEFOREEND);
   
         // Рендер смайлов
   
@@ -185,7 +184,7 @@ const renderFilms = () => {
         const CommentsEmojisData = generateCommentsEmojis(EMOJI_COUNT);
   
         for (let i = 0; i < CommentsEmojisData.length; i++) {
-          renderElement(CommentsEmojiList, new CommetEmoji(CommentsEmojisData[i]).getElement(), RenderPosition.BEFOREEND);
+          render(CommentsEmojiList, new CommetEmoji(CommentsEmojisData[i]), RenderPosition.BEFOREEND);
         };
       };
     });
@@ -232,4 +231,4 @@ renderFilms();
 
 const footerStatistics = document.querySelector(`.footer__statistics`);
 
-renderElement(footerStatistics, new FilmsInside().getElement(), RenderPosition.BEFOREEND);
+render(footerStatistics, new FilmsInside(), RenderPosition.BEFOREEND);

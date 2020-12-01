@@ -35,11 +35,10 @@ render(siteMain, new SortContainer(), RenderPosition.BEFOREEND);
 
 const createSortContainer = document.querySelector(`.sort`);;
 
-const sortDatas = sortData();
+// (0 === 0) ? true: 0 - это к активности кнопки.
 
-for (let i = 0; i < 3; i++) {
-  render(createSortContainer, new Sort(sortDatas[i], (i === 0) ? true: 0), RenderPosition.BEFOREEND);
-};
+render(createSortContainer, new Sort((0 === 0) ? true: 0), RenderPosition.BEFOREEND);
+
 
 
 // Контейнер для фильмов

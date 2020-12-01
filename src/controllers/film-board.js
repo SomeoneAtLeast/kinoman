@@ -140,7 +140,7 @@ export default class FilmBoardController {
               };
         
               // Рендер поля ввода нового комментария
-        
+     
               render(CommentsWrap, new NewComentContainer(), RenderPosition.BEFOREEND);
         
               // Рендер смайлов
@@ -189,5 +189,16 @@ export default class FilmBoardController {
           OnCatchAClick();
           showAndClosePopup();
         });  
+        
+        this.Sort.setSortTypeChangeHandler(() => {
+          prevFilmsCount = showingFilmsCount;
+          showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+        
+          filmCards.slice(prevFilmsCount, showingFilmsCount)
+            .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
+
+            render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+        });
+        
       };
 };

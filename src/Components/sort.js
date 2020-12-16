@@ -18,12 +18,13 @@ export const createSortTemplate = (sortBtn, isActive) => {
 };
 
 export default class Sort extends AbstarctComponent {
-  constructor(sortBtn, isActive) {
+  constructor(targetBlock, sortBtn, isActive) {
     super();
 
     this._currenSortType = SortType.BY_DEFAULT;
     this._sortBtn = sortBtn;
     this._isActive = isActive;
+    this._targetBlock = targetBlock;
   };
 
   getTemplate() {
@@ -34,23 +35,23 @@ export default class Sort extends AbstarctComponent {
     return this._currenSortType;
   };
 
-  setSortTypeChangeHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
+  setSortTypeChangeHandler(hendler) {
+    this._targetBlock.addEventListener(`click`, (evt) => {
       evt.preventDefault();
       
       if (evt.target.tagName !== `A`) {
         return
       }
 
-      const sortType = evt.target.dataset.sortType;
+      // const sortType = evt.target.dataset.sortType;
 
-      if (this._currenSortType === sortType) {
-        return;
-      }
+      // if (this._currenSortType === sortType) {
+      //   return;
+      // }
 
-      this._currenSortType = sortType;
+      // this._currenSortType = sortType;
 
-      hendler(this._currenSortType);
+      // hendler(this._currenSortType);
     });
   };
 

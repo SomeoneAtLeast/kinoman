@@ -12,6 +12,7 @@ import NewComentContainer from "../components/new-comment-container.js";
 import {generateCommentsEmojis} from "../mock/comments-emojis.js";
 import CommetEmoji from "../components/comment-Emoji.js";
 import NoMovies from "../components/no-movies.js";
+import Sort from "../components/sort.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 const FILM_COUNT = 25;
@@ -189,15 +190,18 @@ export default class FilmBoardController {
           OnCatchAClick();
           showAndClosePopup();
         });  
-        
-        this.Sort.setSortTypeChangeHandler(() => {
-          prevFilmsCount = showingFilmsCount;
-          showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
-        
-          filmCards.slice(prevFilmsCount, showingFilmsCount)
-            .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
 
-            render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+        const sort = document.querySelector(`.sort`);
+        const sortClass = new Sort(sort); 
+
+        sortClass.setSortTypeChangeHandler((sortClass) => {
+          // prevFilmsCount = showingFilmsCount;
+          // showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+        
+          // filmCards.slice(prevFilmsCount, showingFilmsCount)
+          //   .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
+
+          //   render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
         });
         
       };

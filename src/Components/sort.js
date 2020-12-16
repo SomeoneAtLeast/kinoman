@@ -43,15 +43,15 @@ export default class Sort extends AbstarctComponent {
         return
       }
 
-      // const sortType = evt.target.dataset.sortType;
+      const sortType = evt.target.dataset.sortType;
 
-      // if (this._currenSortType === sortType) {
-      //   return;
-      // }
+      if (this._currenSortType === sortType) {
+        return;
+      }
 
-      // this._currenSortType = sortType;
+      this._currenSortType = sortType;
 
-      // hendler(this._currenSortType);
+      hendler(this._currenSortType);
     });
   };
 

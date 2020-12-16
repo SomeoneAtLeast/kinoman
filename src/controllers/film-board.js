@@ -53,9 +53,13 @@ export default class FilmBoardController {
         
       
         const ShowMoreBtnComponent = this._showMore;
+        const renderShowMoreBtnComponent = () => {
+          render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+        }
+
       
         if (FILM_COUNT > 5) {
-          render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+          renderShowMoreBtnComponent();
         }
         
         ShowMoreBtnComponent.onSetClick(() => {
@@ -195,13 +199,17 @@ export default class FilmBoardController {
         const sortClass = new Sort(sort); 
 
         sortClass.setSortTypeChangeHandler((sortClass) => {
-          // prevFilmsCount = showingFilmsCount;
-          // showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+          const prevFilmsCount = showingFilmsCount;
+          showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
         
-          // filmCards.slice(prevFilmsCount, showingFilmsCount)
-          //   .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
 
-          //   render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+          filmsListContainer.innerHTML = ``;
+
+          
+          filmCards.slice(prevFilmsCount, showingFilmsCount)
+            .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
+
+            renderShowMoreBtnComponent();
         });
         
       };

@@ -12,7 +12,7 @@ import NewComentContainer from "../components/new-comment-container.js";
 import {generateCommentsEmojis} from "../mock/comments-emojis.js";
 import CommetEmoji from "../components/comment-Emoji.js";
 import NoMovies from "../components/no-movies.js";
-import Sort from "../components/sort.js";
+import Sort, {SortType} from "../components/sort.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 const FILM_COUNT = 25;
@@ -21,6 +21,24 @@ const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
 // Фильмы
 
+const getSortedFilmCards = (filmCards, sortType, from, to) => {
+  let sortedFilmsCards = [];
+  const showingFimsCards = filmCards.slice();
+  console.log(sortType);
+  switch (sortType) {
+    case sortType.BY_DATE:
+      sortedFilmsCards = showingFimsCards.sort((a, b) => a.dueDate - b.dueDate);
+      break;
+    // case sortType.BY_RATING:
+    //     sortedFilmsCards = showingFimsCards.sort((a, b) => a.dueDate - b.dueDate);
+    //     break;
+    case sortType.BY_DEFAULT:
+      sortedFilmsCards = showingFimsCards;
+      break;
+  };
+
+  return sortedFilmsCards.slice(from, to);
+};
 
 export default class FilmBoardController {
     constructor (filmsListContainer, filmsList) {
@@ -197,16 +215,19 @@ export default class FilmBoardController {
 
         const sort = document.querySelector(`.sort`);
         const sortClass = new Sort(sort); 
-
-        sortClass.setSortTypeChangeHandler((sortClass) => {
+        
+        const sortType = sortClass.getSortType();
+        
+        sortClass.setSortTypeChangeHandler((sortType) => {
           const prevFilmsCount = showingFilmsCount;
           showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
         
+          const sortedFilmsCards = getSortedFilmCards(filmCards, sortType, 0, showingFilmsCount);
 
           filmsListContainer.innerHTML = ``;
 
           
-          filmCards.slice(prevFilmsCount, showingFilmsCount)
+          sortedFilmsCards.slice(prevFilmsCount, showingFilmsCount)
             .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
 
             renderShowMoreBtnComponent();

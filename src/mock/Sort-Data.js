@@ -1,5 +1,5 @@
-const sortData = () => {
-    return [`Sort by default`, `Sort by date`, `Sort by rating`];
-};
+// const sortData = () => {
+//     return [`Sort by default`, `Sort by date`, `Sort by rating`];
+// };
 
-export {sortData};
+// export {sortData};

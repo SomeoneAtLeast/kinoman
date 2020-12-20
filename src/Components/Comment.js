@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createCommentTemplate = (commentData) => {
   const {img, comment, name, date} = commentData;
@@ -19,25 +19,14 @@ const createCommentTemplate = (commentData) => {
     )
 };
 
-export default class Comment {
+export default class Comment extends AbstarctComponent {
   constructor(commentData) {
+    super();
+    
     this._commentData = commentData;
-    this._element = null;
-  }
+  };
 
   getTemplate() {
     return createCommentTemplate(this._commentData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
+  };
 };

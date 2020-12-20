@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createFilmCardContainerTemplate = () => {
     return (
@@ -13,24 +13,8 @@ const createFilmCardContainerTemplate = () => {
     )
 };
 
-export default class FilmCardContainer {
-    constructor() {
-      this._element = null;
-    }
-  
+export default class FilmCardContainer extends AbstarctComponent {
     getTemplate() {
       return createFilmCardContainerTemplate();
-    }
-  
-    getElement() {
-      if (!this._element) {
-        this._element = createElement(this.getTemplate());
-      }
-  
-      return this._element;
-    }
-  
-    removeElement() {
-      this._element = null;
-    }
+    };
 };

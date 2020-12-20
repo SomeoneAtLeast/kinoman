@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createMainNavigationItemTemplate = (navData) => {
   const {name, navFilmsCount} = navData;
@@ -21,25 +21,14 @@ export const createMainNavigationTemplate = (navDatas) => {
           </nav>`
 };
 
-export default class MainNavigation {
+export default class MainNavigation extends AbstarctComponent {
   constructor(navData) {
+    super();
+
     this._navData = navData;
-    this._element = null;
-  }
+  };
 
   getTemplate() {
     return createMainNavigationTemplate(this._navData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+  };
+};

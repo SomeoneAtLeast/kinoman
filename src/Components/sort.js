@@ -1,34 +1,58 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
+
+export const SortType = {
+  BY_DEFAULT: `Sort by default`,
+  BY_DATE: `Sort by date`,
+  BY_RATING: `Sort by rating`,
+};
 
 export const createSortTemplate = (sortBtn, isActive) => {
     const active = isActive ? `sort__button--active` : ``;
     return (
         `<ul class="sort">
-        <li><a href="#" class="sort__button ${active}">${sortBtn}</a></li>
+        <li><a href="#" class="sort__button ${active}" data-sort-type="${SortType.BY_DEFAULT}">${SortType.BY_DEFAULT}</a></li>
+        <li><a href="#" class="sort__button" data-sort-type="${SortType.BY_DATE}">${SortType.BY_DATE}</a></li>
+        <li><a href="#" class="sort__button" data-sort-type="${SortType.BY_RATING}">${SortType.BY_RATING}</a></li>
       </ul>`
     )
 };
 
-export default class Sort {
-  constructor(sortBtn, isActive) {
+export default class Sort extends AbstarctComponent {
+  constructor(targetBlock, sortBtn, isActive) {
+    super();
+
+    this._currenSortType = SortType.BY_DEFAULT;
     this._sortBtn = sortBtn;
     this._isActive = isActive;
-    this._element = null;
-  }
+    this._targetBlock = targetBlock;
+  };
 
   getTemplate() {
     return createSortTemplate(this._sortBtn, this._isActive);
-  }
+  };
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
+  getSortType() {
+    return this._currenSortType;
+  };
 
-    return this._element;
-  }
+  setSortTypeChangeHandler(hendler) {
+    this._targetBlock.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      
+      if (evt.target.tagName !== `A`) {
+        return
+      }
 
-  removeElement() {
-    this._element = null;
-  }
+      const sortType = evt.target.dataset.sortType;
+
+      if (this._currenSortType === sortType) {
+        return;
+      }
+
+      this._currenSortType = sortType;
+
+      hendler(this._currenSortType);
+    });
+  };
+
 };

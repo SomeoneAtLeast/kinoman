@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
+
 
 const createSortContainerTemplate = () => {
     return (
@@ -7,25 +8,8 @@ const createSortContainerTemplate = () => {
     )
 };
 
-export default class SortContainer {
-  constructor(navData) {
-
-    this._element = null;
-  }
-
+export default class SortContainer extends AbstarctComponent {
   getTemplate() {
     return createSortContainerTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
+  };
+};

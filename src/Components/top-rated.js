@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 export const createTopRatedTemplate = () => {
     return (
@@ -10,24 +10,8 @@ export const createTopRatedTemplate = () => {
     )
 };
 
-export default class TopRated {
-    constructor() {
-      this._element = null;
-    }
-  
-    getTemplate() {
-      return createTopRatedTemplate();
-    }
-  
-    getElement() {
-      if (!this._element) {
-        this._element = createElement(this.getTemplate());
-      }
-  
-      return this._element;
-    }
-  
-    removeElement() {
-      this._element = null;
-    }
+export default class TopRated extends AbstarctComponent {
+  getTemplate() {
+    return createTopRatedTemplate();
+  }; 
 };

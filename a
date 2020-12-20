@@ -1,0 +1,128 @@
+[33mcommit bdbcee70f24ada2db3caa1a9f2506bdb5d50bdcd[m[33m ([m[1;36mHEAD -> [m[1;32mРефакторинг[m[33m, [m[1;31morigin/Рефакторинг[m[33m)[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Thu Oct 29 00:00:52 2020 +0300
+
+    Перенос рендера в отдельный файл и мелкий рефакторинг
+
+[33mcommit e0e7c9b7d8546c0a2f0cc3290321522cf1d6033b[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Wed Oct 28 22:18:56 2020 +0300
+
+    Реализовано наследование от абстрактного компонента
+
+[33mcommit 09956094ce9cca82a8d3f0b4c06e8a7e72da1894[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 61e2feb f37b8d7
+Author: SomeoneAtLeast <32239135+SomeoneAtLeast@users.noreply.github.com>
+Date:   Sun Oct 25 18:48:59 2020 +0300
+
+    Merge pull request #3 from SomeoneAtLeast/РефакторингВКлассы
+    
+    РефакторингВКлассы
+
+[33mcommit f37b8d737f07c27cebf60810bde479b11cb55fbf[m[33m ([m[1;31morigin/РефакторингВКлассы[m[33m, [m[1;32mРефакторингВКлассы[m[33m)[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sun Oct 25 18:47:42 2020 +0300
+
+    Добавлена заглушка при отсутсвии фильмов
+
+[33mcommit e9d91bd2c548b827125d0ffe331c801195546cff[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sat Oct 17 01:57:28 2020 +0300
+
+    Попап закрывается по ESC
+
+[33mcommit 3d16bef55dd5b076bfb7f1044c87565ce6d758cd[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Fri Oct 16 23:38:04 2020 +0300
+
+    Закончен перевод компонентов в классы
+
+[33mcommit a12c534cfd4a900b9802b2482f07d3e04f725046[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Mon Oct 5 22:47:49 2020 +0300
+
+    Начат перевод компонентов в классы
+
+[33mcommit 875751a245ec8d5195a0581b3bf022c1773e19ae[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Mon Oct 5 02:54:33 2020 +0300
+
+    Рефакторинг рендера
+
+[33mcommit 61e2feb932378aee54826d7e2a5fc047d0c2061d[m
+Merge: 31b34b0 8d77771
+Author: SomeoneAtLeast <32239135+SomeoneAtLeast@users.noreply.github.com>
+Date:   Fri Oct 2 00:38:07 2020 +0300
+
+    Merge pull request #2 from SomeoneAtLeast/СозданиеМоковыхДанных
+    
+    СозданиеМоковыхДанных
+
+[33mcommit 8d77771d6cfda6596c34686c02e08e166ccd9cd4[m[33m ([m[1;31morigin/СозданиеМоковыхДанных[m[33m, [m[1;32mСозданиеМоковыхДанных[m[33m)[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Fri Oct 2 00:36:52 2020 +0300
+
+    Закончено создание моков
+
+[33mcommit 29b833ecb2f157bf302d9ae6ee0c853944827bb0[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Thu Oct 1 03:48:00 2020 +0300
+
+    Реализован функционал кнопки Show more
+
+[33mcommit 64815b3c6edea00a54eb009cf16cd4f144502f66[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sun Sep 27 02:54:20 2020 +0300
+
+    Рефакторинг рендера фильмов и комментариев
+
+[33mcommit 251c3a5e0bcc7acdb0696a7f33868cbefb135b12[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Wed Sep 23 00:13:08 2020 +0300
+
+    Комментарии берутся из моков
+
+[33mcommit a25ebecfa422e5459250246633c42a2ebb92e7a6[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sat Sep 19 17:46:31 2020 +0300
+
+    Информация о фильмах добавляется в разметку из моков + так же добавяется текст кнопок управления + превью открывает подробную информацию
+
+[33mcommit f0521986e2b9c2eedc06edb3fc8ef69d476ee9cf[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sat Sep 19 02:05:59 2020 +0300
+
+    Создание отдельных структур с данными для карточек фильмов
+
+[33mcommit 31b34b081b757c48e6a25c502aa8ed450574c01d[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Sat Sep 12 00:03:36 2020 +0300
+
+    js код разбит на модули, в качестве сборщика webpack
+
+[33mcommit 3342714ba44b20d8e7e64d18da255630733821d7[m
+Merge: 4e87b17 44438f7
+Author: SomeoneAtLeast <32239135+SomeoneAtLeast@users.noreply.github.com>
+Date:   Thu Sep 10 19:47:25 2020 +0300
+
+    Merge pull request #1 from SomeoneAtLeast/нарежемМакет
+    
+    Элементы макета отображаются на странице при помощи js-рендера
+
+[33mcommit 44438f73dfb64e2be200a06c8d3eb5ae51a1d24b[m[33m ([m[1;31morigin/нарежемМакет[m[33m, [m[1;32mнарежемМакет[m[33m)[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Thu Sep 10 19:46:31 2020 +0300
+
+    Элементы макета отображаются на странице при помощи js-рендера
+
+[33mcommit 4e87b172cca0ce06525125bc91bf6d4d16aef189[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Thu Sep 10 17:51:17 2020 +0300
+
+    Вот теперь уж точно начальное
+
+[33mcommit 76c31da1c3fa0efb6687aadef28e316390bc2c56[m
+Author: SomeoneAtLeast <winecooler@yandex.ru>
+Date:   Thu Sep 10 17:50:14 2020 +0300
+
+    Начальное состояние

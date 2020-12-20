@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createCommetEmojiTemplate = (emojisData) => {
   const {emoji} = emojisData;
@@ -10,25 +10,14 @@ const createCommetEmojiTemplate = (emojisData) => {
     )
 };
 
-export default class CommetEmoji {
+export default class CommetEmoji extends AbstarctComponent {
   constructor(emojisData) {
+    super();
+
     this._emojisData = emojisData;
-    this._element = null;
-  }
+  };
 
   getTemplate() {
     return createCommetEmojiTemplate(this._emojisData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
+  };
 };

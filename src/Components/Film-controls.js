@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstarctComponent from "./abstract-comp.js";
 
 const createFilmControlsTemplate = (watchlistBtn, watchedBtn, favoriteBtn) => {
     
@@ -16,27 +16,16 @@ const createFilmControlsTemplate = (watchlistBtn, watchedBtn, favoriteBtn) => {
     )
 };
 
-export default class FilmControls {
+export default class FilmControls extends AbstarctComponent  {
     constructor(watchlistBtn, watchedBtn, favoriteBtn) {
+      super();
+
       this._watchlistBtn = watchlistBtn;
       this._watchedBtn = watchedBtn;
       this._favoriteBtn = favoriteBtn;
-      this._element = null;
-    }
+    };
   
     getTemplate() {
       return createFilmControlsTemplate(this._watchlistBtn, this._watchedBtn, this._favoriteBtn);
-    }
-  
-    getElement() {
-      if (!this._element) {
-        this._element = createElement(this.getTemplate());
-      }
-  
-      return this._element;
-    }
-  
-    removeElement() {
-      this._element = null;
-    }
-  };
+    };
+};

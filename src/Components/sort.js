@@ -10,9 +10,9 @@ export const createSortTemplate = (sortBtn, isActive) => {
     const active = isActive ? `sort__button--active` : ``;
     return (
         `<ul class="sort">
-        <li><a href="#" class="sort__button ${active}">${SortType.BY_DEFAULT}</a></li>
-        <li><a href="#" class="sort__button">${SortType.BY_DATE}</a></li>
-        <li><a href="#" class="sort__button">${SortType.BY_RATING}</a></li>
+        <li><a href="#" class="sort__button ${active}" data-sort-type="${SortType.BY_DEFAULT}">${SortType.BY_DEFAULT}</a></li>
+        <li><a href="#" class="sort__button" data-sort-type="${SortType.BY_DATE}">${SortType.BY_DATE}</a></li>
+        <li><a href="#" class="sort__button" data-sort-type="${SortType.BY_RATING}">${SortType.BY_RATING}</a></li>
       </ul>`
     )
 };

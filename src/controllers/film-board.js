@@ -24,15 +24,14 @@ const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 const getSortedFilmCards = (filmCards, sortType, from, to) => {
   let sortedFilmsCards = [];
   const showingFimsCards = filmCards.slice();
-  console.log(sortType);
   switch (sortType) {
-    case sortType.BY_DATE:
-      sortedFilmsCards = showingFimsCards.sort((a, b) => a.dueDate - b.dueDate);
+    case SortType.BY_DATE:
+      sortedFilmsCards = showingFimsCards.sort((a, b) => a.year - b.year);
       break;
-    // case sortType.BY_RATING:
-    //     sortedFilmsCards = showingFimsCards.sort((a, b) => a.dueDate - b.dueDate);
-    //     break;
-    case sortType.BY_DEFAULT:
+    case SortType.BY_RATING:
+      sortedFilmsCards = showingFimsCards.sort((a, b) => a.rating - b.rating);
+      break;
+    case SortType.BY_DEFAULT:
       sortedFilmsCards = showingFimsCards;
       break;
   };
@@ -69,28 +68,32 @@ export default class FilmBoardController {
         
         // Загрузка следующих фильмов
         
-      
+        const renderFilms = (films, startPosition) => {
+          films.slice(startPosition, showingFilmsCount)
+          .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
+        }
+
         const ShowMoreBtnComponent = this._showMore;
         const renderShowMoreBtnComponent = () => {
           render(filmsList, ShowMoreBtnComponent, RenderPosition.BEFOREEND);
+
+          ShowMoreBtnComponent.onSetClick(() => {
+            const prevFilmsCount = showingFilmsCount;
+            showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
+            const sortedFilmsCards = getSortedFilmCards(filmCards, sortClass.getSortType());
+            console.log(prevFilmsCount);
+            console.log(showingFilmsCount);
+            renderFilms(sortedFilmsCards, prevFilmsCount);
+  
+            if (showingFilmsCount >= sortedFilmsCards.length) {
+              remove(ShowMoreBtnComponent);
+            };
+          });
         }
 
-      
         if (FILM_COUNT > 5) {
           renderShowMoreBtnComponent();
         }
-        
-        ShowMoreBtnComponent.onSetClick(() => {
-          const prevFilmsCount = showingFilmsCount;
-          showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
-        
-          filmCards.slice(prevFilmsCount, showingFilmsCount)
-            .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
-        
-          if (showingFilmsCount >= filmCards.length) {
-            remove(ShowMoreBtnComponent);
-          };
-        });
         
         // Самые рейтинговые и самые комментируемые 
         
@@ -216,21 +219,19 @@ export default class FilmBoardController {
         const sort = document.querySelector(`.sort`);
         const sortClass = new Sort(sort); 
         
-        const sortType = sortClass.getSortType();
-        
         sortClass.setSortTypeChangeHandler((sortType) => {
+          showingFilmsCount = 0;
           const prevFilmsCount = showingFilmsCount;
           showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
-        
           const sortedFilmsCards = getSortedFilmCards(filmCards, sortType, 0, showingFilmsCount);
 
           filmsListContainer.innerHTML = ``;
 
-          
-          sortedFilmsCards.slice(prevFilmsCount, showingFilmsCount)
-            .forEach((filmCards) => render(filmsListContainer, new FilmCard(filmCards), RenderPosition.BEFOREEND));
+          renderFilms(sortedFilmsCards, prevFilmsCount);
 
+          if (!document.querySelector(`.films-list__show-more`)) {
             renderShowMoreBtnComponent();
+          };
         });
         
       };
